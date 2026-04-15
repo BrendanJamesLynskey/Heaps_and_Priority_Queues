@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heaps and Priority Queues</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+  :root {
+    --amber:  #f5a623;
+    --green:  #4ecb8d;
+    --purple: #a78bfa;
+    --blue:   #60a5fa;
+    --red:    #f87171;
+    --bg:     #0a0a0f;
+    --bg2:    #10101a;
+    --bg3:    #181824;
+    --border: #2a2a3a;
+    --text:   #e8e8f0;
+    --muted:  #8888a8;
+  }
+
+  .reveal-viewport { background: var(--bg); }
+  .reveal .slides section { background: transparent; }
+
+  .reveal { font-family: 'DM Sans', sans-serif; color: var(--text); }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: 'Playfair Display', serif; font-weight: 700; }
+  .reveal h1 { font-size: 1.6em; color: var(--amber); line-height: 1.1; }
+  .reveal h2 { font-size: 1.1em; color: var(--amber); margin-bottom: .2em; }
+  .reveal h3 { font-size: .78em; color: var(--green); margin-bottom: .15em; }
+  .reveal p  { font-size: .56em; line-height: 1.45; color: var(--text); }
+  .reveal li { font-size: .54em; line-height: 1.45; margin-bottom: .1em; }
+  .reveal code { font-family: 'JetBrains Mono', monospace; font-size: .72em; }
+  .reveal pre  { box-shadow: none; background: var(--bg3); border: 1px solid var(--border);
+                 border-radius: 6px; padding: .3em .5em; margin: .25em 0; }
+  .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #cdd6f4; }
+
+  /* ── slide chrome ── */
+  .slide-hdr {
+    display: flex; align-items: center; gap: .4em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: .2em; margin-bottom: .3em;
+  }
+  .slide-hdr .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .42em; font-weight: 500;
+    color: var(--bg); background: var(--amber);
+    padding: .1em .4em; border-radius: 3px;
+    letter-spacing: .04em;
+  }
+  .slide-hdr h2 { margin: 0; font-size: .95em; }
+
+  /* ── two-column ── */
+  .cols   { display: grid; gap: .5em; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cols-6040 { grid-template-columns: 6fr 4fr; }
+  .cols-4060 { grid-template-columns: 4fr 6fr; }
+
+  /* ── cards ── */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 6px; padding: .35em .6em;
+  }
+  .card.amber { border-left: 3px solid var(--amber); }
+  .card.green { border-left: 3px solid var(--green); }
+  .card.purple{ border-left: 3px solid var(--purple); }
+  .card.blue  { border-left: 3px solid var(--blue); }
+  .card.red   { border-left: 3px solid var(--red); }
+  .card h3 { font-size: .64em; margin: 0 0 .12em; }
+  .card p  { font-size: .52em; margin: 0; color: #b8b8d0; }
+  .card ul { margin: 0; padding-left: 1em; }
+  .card li { font-size: .52em; color: #b8b8d0; margin-bottom: .02em; }
+
+  /* ── table ── */
+  .reveal table { width: 100%; border-collapse: collapse; font-size: .5em; }
+  .reveal table th { background: var(--bg3); color: var(--amber); font-weight: 600;
+                     padding: .2em .4em; border: 1px solid var(--border); text-align: left; }
+  .reveal table td { padding: .18em .4em; border: 1px solid var(--border); color: #ccc; }
+  .reveal table tr:nth-child(even) td { background: #0e0e18; }
+
+  /* ── accent spans ── */
+  .a  { color: var(--amber); font-weight: 600; }
+  .g  { color: var(--green); font-weight: 600; }
+  .p  { color: var(--purple); font-weight: 600; }
+  .b  { color: var(--blue); font-weight: 600; }
+  .r  { color: var(--red); font-weight: 600; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── SVG graph diagrams ── */
+  svg.diagram { display: block; margin: 0 auto; overflow: visible; }
+
+  /* ── pill badges ── */
+  .pill {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: .44em; padding: .08em .4em; border-radius: 99px;
+    border: 1px solid; margin: 0 .08em;
+  }
+  .pill.amber { color: var(--amber); border-color: var(--amber); }
+  .pill.green { color: var(--green); border-color: var(--green); }
+  .pill.purple{ color: var(--purple); border-color: var(--purple); }
+  .pill.blue  { color: var(--blue); border-color: var(--blue); }
+
+  /* ── footer — hidden ── */
+  .reveal .slide-footer { display: none; }
+  /* title slide special */
+  .title-slide h1 { font-size: 1.8em; }
+  .title-slide .subtitle {
+    font-size: .7em; color: var(--green); font-family: 'DM Sans', sans-serif;
+    font-weight: 300; letter-spacing: .04em; margin: .3em 0 .6em;
+  }
+  .title-slide .meta { font-size: .48em; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+  /* ── super-step animator ── */
+  .ss-row {
+    display: flex; gap: .25em; align-items: center;
+    margin: .1em 0; font-size: .55em; font-family: 'JetBrains Mono', monospace;
+  }
+  .ss-node {
+    padding: .2em .55em; border-radius: 5px; font-size: .9em;
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  }
+  .ss-node.active { background: #1a2a1a; border-color: var(--green); color: var(--green); }
+  .ss-node.done   { background: #1a1a2a; border-color: var(--purple); color: var(--purple); }
+  .ss-arrow { color: var(--amber); }
+  .ss-label { font-size: .8em; color: var(--muted); margin-left: .3em; }
+
+  /* reduce default margins */
+  .reveal ul, .reveal ol { margin: .15em 0 .15em 1em; }
+.reveal .slides > section { display: flex !important; flex-direction: column !important; overflow-y: auto !important; align-items: stretch !important; justify-content: flex-start !important; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 01 — Title
+══════════════════════════════════════════════════════════════════ -->
+<section class="title-slide" data-background-color="#0a0a0f">
+  <div style="font-family:'JetBrains Mono',monospace; font-size:.5em; color:var(--muted); margin-bottom:.4em; letter-spacing:.1em;">COMPUTER SCIENCE FUNDAMENTALS SERIES</div>
+  <h1>Heaps and<br>Priority Queues</h1>
+  <div class="subtitle">
+    Binary heaps · Heap sort · Fibonacci heaps ·<br>
+    Build-heap · Decrease-key · Priority queue ADT
+  </div>
+  <div style="width:60px; height:3px; background:var(--amber); margin-bottom:1.4em;"></div>
+  <div class="meta">
+    Mid-level software engineer track &nbsp;·&nbsp; 20 slides
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 02 — Priority Queue ADT
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">02</span>
+    <h2>Priority Queue ADT</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Abstract interface</h3>
+      <p>A priority queue is a container where each element has an associated priority. Core operations:</p>
+      <ul>
+        <li><strong>insert(key, priority)</strong> — add an element with the given priority</li>
+        <li><strong>extract-min / extract-max</strong> — remove and return the highest-priority element</li>
+        <li><strong>peek-min / peek-max</strong> — return highest-priority element without removing</li>
+        <li><strong>decrease-key(handle, new_priority)</strong> — lower the priority of an existing element</li>
+        <li><strong>merge(pq1, pq2)</strong> — combine two priority queues into one</li>
+      </ul>
+      <div class="card blue" style="margin-top:0.5em">
+        <p>Sorting gives all elements in order but costs <code>O(n log n)</code> up front and requires all elements known. A priority queue supports <strong style="color:var(--amber)">dynamic</strong> insertion and extraction — elements arrive over time.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Implementations compared</h3>
+      <table>
+        <tr><th>Implementation</th><th>insert</th><th>extract</th><th>dec-key</th><th>merge</th></tr>
+        <tr><td>Unsorted array</td><td>O(1)</td><td>O(n)</td><td>O(1)</td><td>O(1)</td></tr>
+        <tr><td>Sorted array</td><td>O(n)</td><td>O(1)</td><td>O(n)</td><td>O(n)</td></tr>
+        <tr><td>Binary heap</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td><td>O(n)</td></tr>
+        <tr><td>Binomial heap</td><td>O(1)*</td><td>O(log n)</td><td>O(log n)</td><td>O(log n)</td></tr>
+        <tr><td>Fibonacci heap</td><td>O(1)*</td><td>O(log n)*</td><td>O(1)*</td><td>O(1)*</td></tr>
+        <tr><td>Pairing heap</td><td>O(1)</td><td>O(log n)*</td><td>O(log log n)*</td><td>O(1)</td></tr>
+      </table>
+      <p style="font-size:0.48em; color:var(--muted); margin-top:0.3em;">* = amortised</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 03 — Structure Property
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">03</span>
+    <h2>Binary Heap — Structure Property</h2>
+  </div>
+  <div class="cols cols-6040">
+    <div>
+      <h3>Complete binary tree</h3>
+      <p>A binary heap is a <strong style="color:var(--amber)">complete binary tree</strong> — every level is fully filled except possibly the last, which is filled left to right.</p>
+      <ul>
+        <li>Height is always <code>O(log n)</code> — guarantees worst-case operation bounds</li>
+        <li>No wasted space in the array representation — no pointers needed</li>
+        <li>Cache-friendly contiguous memory layout</li>
+        <li>Predictable shape makes implementation simple</li>
+      </ul>
+      <div class="card amber" style="margin-top:0.5em">
+        <p>A binary heap is <strong style="color:var(--amber)">not</strong> a binary search tree. There is no ordering between left and right children — only between parent and child.</p>
+      </div>
+    </div>
+    <div>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em;">
+        <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- Level 0 -->
+          <circle cx="150" cy="30" r="18" fill="#1a1a28" stroke="#f5a623" stroke-width="2"/>
+          <text x="150" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#f5a623">2</text>
+          <!-- Level 1 -->
+          <line x1="138" y1="45" x2="85" y2="75" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="162" y1="45" x2="215" y2="75" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="80" cy="90" r="18" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="80" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4ecb8d">5</text>
+          <circle cx="220" cy="90" r="18" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="220" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4ecb8d">3</text>
+          <!-- Level 2 -->
+          <line x1="68" y1="105" x2="40" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="92" y1="105" x2="120" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="208" y1="105" x2="180" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="232" y1="105" x2="260" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="35" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="35" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">8</text>
+          <circle cx="120" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="120" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">7</text>
+          <circle cx="180" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="180" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">9</text>
+          <circle cx="265" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="265" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">4</text>
+          <!-- Level 3 (partial — shows completeness) -->
+          <line x1="23" y1="165" x2="10" y2="190" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="47" y1="165" x2="60" y2="190" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="10" cy="205" r="16" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="10" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#60a5fa">10</text>
+          <circle cx="60" cy="205" r="16" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="60" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#60a5fa">12</text>
+          <!-- Label -->
+          <text x="150" y="235" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8888a8">Height = ⌊log₂ n⌋ = 3</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 04 — Heap Property
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">04</span>
+    <h2>Binary Heap — Heap Property</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Min-heap property</h3>
+      <p>Every node's key is <strong style="color:var(--green)">less than or equal to</strong> both of its children's keys. The root holds the minimum.</p>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin-top:.3em;">
+        <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <line x1="110" y1="25" x2="55" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="110" y1="25" x2="165" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="28" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="82" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="165" y1="70" x2="138" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="110" cy="20" r="15" fill="#1a2a1a" stroke="#4ecb8d" stroke-width="2"/>
+          <text x="110" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4ecb8d">2</text>
+          <circle cx="55" cy="65" r="15" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="55" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#e8e8f0">5</text>
+          <circle cx="165" cy="65" r="15" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="165" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#e8e8f0">3</text>
+          <circle cx="28" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="28" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8888a8">8</text>
+          <circle cx="82" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="82" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8888a8">7</text>
+          <circle cx="138" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="138" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8888a8">9</text>
+          <text x="110" y="145" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#4ecb8d">Parent ≤ Children</text>
+        </svg>
+      </div>
+    </div>
+    <div>
+      <h3>Max-heap property</h3>
+      <p>Every node's key is <strong style="color:var(--amber)">greater than or equal to</strong> both of its children's keys. The root holds the maximum.</p>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin-top:.3em;">
+        <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <line x1="110" y1="25" x2="55" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="110" y1="25" x2="165" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="28" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="82" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="165" y1="70" x2="138" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="110" cy="20" r="15" fill="#2e1e00" stroke="#f5a623" stroke-width="2"/>
+          <text x="110" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#f5a623">50</text>
+          <circle cx="55" cy="65" r="15" fill="#1a1a28" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="55" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">30</text>
+          <circle cx="165" cy="65" r="15" fill="#1a1a28" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="165" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">40</text>
+          <circle cx="28" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="28" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#8888a8">10</text>
+          <circle cx="82" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="82" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#8888a8">20</text>
+          <circle cx="138" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="138" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#8888a8">35</text>
+          <text x="110" y="145" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#f5a623">Parent ≥ Children</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="card purple" style="margin-top:0.5em">
+    <p>The heap property is <strong style="color:var(--purple)">weaker</strong> than the BST property. Siblings have no ordering relative to each other. This weaker invariant is what makes heap operations faster for priority queue use cases.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 05 — Array Representation
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">05</span>
+    <h2>Array Representation</h2>
+  </div>
+  <div class="cols cols-6040">
+    <div>
+      <h3>Implicit tree in an array</h3>
+      <p>A complete binary tree maps perfectly to a flat array with zero overhead — no pointers, no node allocations, no fragmented memory.</p>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin:.3em 0;">
+        <svg viewBox="0 0 380 50" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- Array cells -->
+          <rect x="0" y="5" width="38" height="30" rx="3" fill="#2e1e00" stroke="#f5a623" stroke-width="1"/>
+          <rect x="42" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="84" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="126" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="168" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="210" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="252" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="294" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="336" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <!-- Values -->
+          <text x="19" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f5a623">2</text>
+          <text x="61" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">5</text>
+          <text x="103" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">3</text>
+          <text x="145" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">8</text>
+          <text x="187" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">7</text>
+          <text x="229" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">9</text>
+          <text x="271" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">4</text>
+          <text x="313" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">10</text>
+          <text x="355" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">12</text>
+          <!-- Indices -->
+          <text x="19" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">0</text>
+          <text x="61" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">1</text>
+          <text x="103" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">2</text>
+          <text x="145" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">3</text>
+          <text x="187" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">4</text>
+          <text x="229" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">5</text>
+          <text x="271" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">6</text>
+          <text x="313" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">7</text>
+          <text x="355" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">8</text>
+        </svg>
+      </div>
+    </div>
+    <div>
+      <h3>Navigation formulas (0-indexed)</h3>
+      <table>
+        <tr><th>Relationship</th><th>Formula</th></tr>
+        <tr><td>Parent of node <code>i</code></td><td><code>(i - 1) / 2</code></td></tr>
+        <tr><td>Left child of <code>i</code></td><td><code>2i + 1</code></td></tr>
+        <tr><td>Right child of <code>i</code></td><td><code>2i + 2</code></td></tr>
+        <tr><td>Is leaf?</td><td><code>i &gt;= n / 2</code></td></tr>
+        <tr><td>Last internal node</td><td><code>n/2 - 1</code></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="card green" style="margin-top:0.5em">
+    <p>No pointers, no node allocations, no fragmented memory. The array representation is why binary heaps dominate in practice despite theoretically inferior bounds to Fibonacci heaps.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 06 — Sift-Up
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">06</span>
+    <h2>Sift-Up (Insert)</h2>
+  </div>
+  <div class="cols cols-6040">
+    <div>
+      <h3>Algorithm</h3>
+      <ol>
+        <li>Append the new element at the <strong>end</strong> of the array (next leaf position)</li>
+        <li>Compare with parent — if smaller (min-heap), <strong>swap</strong></li>
+        <li>Repeat up the tree until heap property is restored or root is reached</li>
+      </ol>
+      <pre><code class="python">def insert(heap, key):
+    heap.append(key)
+    i = len(heap) - 1
+    # Sift up
+    while i > 0:
+        parent = (i - 1) // 2
+        if heap[i] < heap[parent]:
+            heap[i], heap[parent] = heap[parent], heap[i]
+            i = parent
+        else:
+            break</code></pre>
+      <div class="card amber" style="margin-top:0.3em">
+        <p><strong style="color:var(--amber)">Time:</strong> O(log n) — at most one swap per level from leaf to root.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Visual walkthrough — insert 1</h3>
+      <div style="display:flex; flex-direction:column; gap:.3em; margin-top:0.3em">
+        <div class="ss-row"><span class="ss-label">Step 0:</span> <span class="ss-node">2</span><span class="ss-node">5</span><span class="ss-node">3</span><span class="ss-node">8</span><span class="ss-node">7</span><span class="ss-node">9</span><span class="ss-node active">1</span></div>
+        <div class="ss-row"><span class="ss-label">Swap 1↔3:</span> <span class="ss-node">2</span><span class="ss-node">5</span><span class="ss-node active">1</span><span class="ss-node">8</span><span class="ss-node">7</span><span class="ss-node">9</span><span class="ss-node done">3</span></div>
+        <div class="ss-row"><span class="ss-label">Swap 1↔2:</span> <span class="ss-node active">1</span><span class="ss-node">5</span><span class="ss-node done">2</span><span class="ss-node">8</span><span class="ss-node">7</span><span class="ss-node">9</span><span class="ss-node">3</span></div>
+        <div class="ss-row"><span class="ss-label">Done!</span> <span class="ss-node active">1</span><span class="ss-node">5</span><span class="ss-node">2</span><span class="ss-node">8</span><span class="ss-node">7</span><span class="ss-node">9</span><span class="ss-node">3</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 07 — Sift-Down
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">07</span>
+    <h2>Sift-Down (Extract)</h2>
+  </div>
+  <div class="cols cols-6040">
+    <div>
+      <h3>Algorithm (extract-min)</h3>
+      <ol>
+        <li>Return the root element (the minimum)</li>
+        <li>Move the <strong>last</strong> element to the root position</li>
+        <li>Compare with children — swap with the <strong>smaller</strong> child</li>
+        <li>Repeat down the tree until heap property is restored or a leaf is reached</li>
+      </ol>
+      <pre><code class="python">def extract_min(heap):
+    minimum = heap[0]
+    heap[0] = heap.pop()  # move last to root
+    sift_down(heap, 0)
+    return minimum
+
+def sift_down(heap, i):
+    n = len(heap)
+    while 2 * i + 1 < n:
+        child = 2 * i + 1
+        if child + 1 < n and heap[child+1] < heap[child]:
+            child += 1
+        if heap[i] <= heap[child]:
+            break
+        heap[i], heap[child] = heap[child], heap[i]
+        i = child</code></pre>
+    </div>
+    <div>
+      <h3>Visual walkthrough</h3>
+      <p>Extract-min from <code>[2, 5, 3, 8, 7, 9, 4]</code>:</p>
+      <div style="display:flex; flex-direction:column; gap:.3em; margin-top:0.3em">
+        <div class="ss-row"><span class="ss-label">Remove 2, move 4 to root:</span></div>
+        <div class="ss-row"><span class="ss-node active">4</span><span class="ss-node">5</span><span class="ss-node">3</span><span class="ss-node">8</span><span class="ss-node">7</span><span class="ss-node">9</span></div>
+        <div class="ss-row"><span class="ss-label">Swap 4↔3 (smaller child):</span></div>
+        <div class="ss-row"><span class="ss-node done">3</span><span class="ss-node">5</span><span class="ss-node active">4</span><span class="ss-node">8</span><span class="ss-node">7</span><span class="ss-node">9</span></div>
+        <div class="ss-row"><span class="ss-label">4 &lt; 9 — done:</span></div>
+        <div class="ss-row"><span class="ss-node done">3</span><span class="ss-node">5</span><span class="ss-node done">4</span><span class="ss-node">8</span><span class="ss-node">7</span><span class="ss-node">9</span></div>
+      </div>
+      <div class="card amber" style="margin-top:0.5em">
+        <p><strong style="color:var(--amber)">Time:</strong> O(log n) — at most one swap per level. Sift-down is also the core subroutine of build-heap and heap sort.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 08 — Build-Heap
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">08</span>
+    <h2>Build-Heap in O(n)</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>The naive approach</h3>
+      <p>Insert elements one by one: <code>n</code> insertions × <code>O(log n)</code> each = <code>O(n log n)</code>.</p>
+      <h3>Floyd's algorithm (bottom-up)</h3>
+      <p>Start from the last internal node and sift-down each node, working backwards to the root.</p>
+      <pre><code class="python">def build_heap(arr):
+    n = len(arr)
+    # Start from last internal node
+    for i in range(n // 2 - 1, -1, -1):
+        sift_down(arr, i, n)</code></pre>
+      <div class="card green" style="margin-top:0.3em">
+        <p><strong style="color:var(--green)">Key insight:</strong> most nodes are near the bottom and do almost no work. This makes the total O(n), not O(n log n).</p>
+      </div>
+    </div>
+    <div>
+      <h3>Work distribution by level</h3>
+      <table>
+        <tr><th>Level (from bottom)</th><th>Nodes</th><th>Sift cost</th><th>Total</th></tr>
+        <tr><td>0 (leaves)</td><td>n/2</td><td>0</td><td>0</td></tr>
+        <tr><td>1</td><td>n/4</td><td>1</td><td>n/4</td></tr>
+        <tr><td>2</td><td>n/8</td><td>2</td><td>n/4</td></tr>
+        <tr><td>3</td><td>n/16</td><td>3</td><td>3n/16</td></tr>
+        <tr><td>k</td><td>n/2<sup>k+1</sup></td><td>k</td><td>kn/2<sup>k+1</sup></td></tr>
+      </table>
+      <p style="margin-top:0.4em;">Half the nodes are leaves (zero work), a quarter do one swap, an eighth do two — the geometric series converges to <strong style="color:var(--amber)">O(n)</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 09 — Build-Heap Proof
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">09</span>
+    <h2>Build-Heap — Proof of O(n)</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Summing the work</h3>
+      <pre><code>T(n) = Σ (k=0 to h) ⌊n / 2^(k+1)⌋ · k
+
+     = n · Σ (k=0 to ∞) k / 2^(k+1)
+
+     = n · Σ (k=0 to ∞) k · x^k   where x = 1/2</code></pre>
+      <h3>The key identity</h3>
+      <p>Using the power series identity <code>Σ k·x^k = x / (1-x)²</code> for |x| &lt; 1:</p>
+      <pre><code>Σ (k=0 to ∞) k / 2^k = (1/2) / (1 - 1/2)²
+                       = (1/2) / (1/4)
+                       = 2
+
+Therefore: T(n) = n · 2 / 2 = n</code></pre>
+    </div>
+    <div>
+      <h3>Build-heap is O(n)</h3>
+      <p>This is a <strong style="color:var(--green)">tight bound</strong> — you cannot build a heap faster than O(n) because you must at least read every element.</p>
+      <div class="card amber" style="margin-top:0.5em">
+        <p><strong style="color:var(--amber)">Intuition:</strong> The sum converges because the number of nodes decreases exponentially as the sift-down cost increases linearly. The geometric decrease dominates.</p>
+      </div>
+      <div class="card purple" style="margin-top:0.5em">
+        <p><strong style="color:var(--purple)">Contrast with top-down:</strong> Inserting one-by-one is O(n log n) because sift-up does the most work at the bottom where most nodes live. Floyd's algorithm uses sift-down, which does the <em>least</em> work at the bottom.</p>
+      </div>
+      <div class="card blue" style="margin-top:0.5em">
+        <p><strong style="color:var(--blue)">Interview note:</strong> This proof is frequently tested. Know the series identity and be able to explain why bottom-up is linear.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 10 — Heap Sort
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">10</span>
+    <h2>Heap Sort</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Algorithm</h3>
+      <ol>
+        <li><strong>Build a max-heap</strong> from the input array — O(n)</li>
+        <li>Repeatedly <strong>extract the maximum</strong> and place it at the end:</li>
+      </ol>
+      <pre><code class="python">def heap_sort(arr):
+    n = len(arr)
+    # Phase 1: build max-heap -- O(n)
+    for i in range(n // 2 - 1, -1, -1):
+        sift_down(arr, i, n)
+
+    # Phase 2: extract max -- O(n log n)
+    for end in range(n - 1, 0, -1):
+        arr[0], arr[end] = arr[end], arr[0]
+        sift_down(arr, 0, end)</code></pre>
+    </div>
+    <div>
+      <h3>Properties</h3>
+      <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Time (worst / avg / best)</td><td>O(n log n)</td></tr>
+        <tr><td>Space</td><td>O(1) — in-place</td></tr>
+        <tr><td>Stable?</td><td>No</td></tr>
+        <tr><td>Adaptive?</td><td>No — always O(n log n)</td></tr>
+      </table>
+      <div class="card green" style="margin-top:0.5em">
+        <p><strong style="color:var(--green)">Advantage over quicksort:</strong> guaranteed O(n log n) worst case. Quicksort degrades to O(n²) on adversarial input.</p>
+      </div>
+      <div class="card purple" style="margin-top:0.3em">
+        <p><strong style="color:var(--purple)">Disadvantage:</strong> worse cache locality than quicksort. In practice, quicksort wins on average due to sequential access patterns and smaller constant factors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 11 — Min vs Max Heap
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">11</span>
+    <h2>Min-Heap vs Max-Heap</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Structural difference</h3>
+      <table>
+        <tr><th>Property</th><th>Min-heap</th><th>Max-heap</th></tr>
+        <tr><td>Root contains</td><td>Smallest</td><td>Largest</td></tr>
+        <tr><td>Parent vs child</td><td>parent ≤ child</td><td>parent ≥ child</td></tr>
+        <tr><td>extract returns</td><td>Minimum</td><td>Maximum</td></tr>
+        <tr><td>Primary use</td><td>Priority queues</td><td>Heap sort, top-K</td></tr>
+      </table>
+      <h3 style="margin-top:0.5em">Converting between them</h3>
+      <p>Negate all keys: a min-heap on <code>-key</code> behaves as a max-heap on <code>key</code>.</p>
+      <pre><code class="python"># Max-heap via Python's heapq (min-heap):
+import heapq
+max_heap = []
+heapq.heappush(max_heap, -value)
+largest = -heapq.heappop(max_heap)</code></pre>
+    </div>
+    <div>
+      <h3>Language defaults</h3>
+      <table>
+        <tr><th>Language</th><th>Default</th><th>Module / Class</th></tr>
+        <tr><td>Python</td><td>Min-heap</td><td><code>heapq</code></td></tr>
+        <tr><td>Java</td><td>Min-heap</td><td><code>PriorityQueue</code></td></tr>
+        <tr><td>C++</td><td>Max-heap</td><td><code>priority_queue</code></td></tr>
+        <tr><td>Go</td><td>Min-heap</td><td><code>container/heap</code></td></tr>
+        <tr><td>Rust</td><td>Max-heap</td><td><code>BinaryHeap</code></td></tr>
+        <tr><td>C#</td><td>Min-heap</td><td><code>PriorityQueue</code></td></tr>
+      </table>
+      <div class="card red" style="margin-top:0.5em">
+        <p><strong style="color:var(--red)">Common pitfall:</strong> C++ <code>priority_queue</code> is a max-heap by default — the opposite of most other languages. Use <code>greater&lt;T&gt;</code> comparator for min-heap behaviour.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 12 — D-ary Heaps
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">12</span>
+    <h2>D-ary Heaps</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Generalising the branching factor</h3>
+      <p>A <strong style="color:var(--amber)">d-ary heap</strong> is a complete d-ary tree satisfying the heap property. A binary heap is the special case d = 2.</p>
+      <h3>Navigation (0-indexed)</h3>
+      <table>
+        <tr><th>Relationship</th><th>Formula</th></tr>
+        <tr><td>Parent of node <code>i</code></td><td><code>(i - 1) / d</code></td></tr>
+        <tr><td>j-th child of <code>i</code></td><td><code>d·i + j + 1</code></td></tr>
+      </table>
+      <h3 style="margin-top:0.4em">Trade-offs</h3>
+      <table>
+        <tr><th>Operation</th><th>Binary (d=2)</th><th>D-ary</th></tr>
+        <tr><td>insert (sift-up)</td><td>O(log₂ n)</td><td>O(log_d n) <span class="g">faster</span></td></tr>
+        <tr><td>extract (sift-down)</td><td>O(log₂ n)</td><td>O(d · log_d n) <span class="r">slower</span></td></tr>
+        <tr><td>decrease-key</td><td>O(log₂ n)</td><td>O(log_d n) <span class="g">faster</span></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>4-ary heap example</h3>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em;">
+        <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- Root -->
+          <circle cx="140" cy="25" r="16" fill="#2e1e00" stroke="#f5a623" stroke-width="2"/>
+          <text x="140" y="30" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f5a623">2</text>
+          <!-- Level 1: 4 children -->
+          <line x1="128" y1="38" x2="45" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="134" y1="40" x2="105" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="146" y1="40" x2="175" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="152" y1="38" x2="235" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="45" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="45" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">5</text>
+          <circle cx="105" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="105" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">3</text>
+          <circle cx="175" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="175" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">7</text>
+          <circle cx="235" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="235" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">4</text>
+          <!-- Level 2: children of node 5 -->
+          <line x1="33" y1="98" x2="15" y2="122" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="45" y1="100" x2="45" y2="122" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="57" y1="98" x2="75" y2="122" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="15" cy="135" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="15" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#a78bfa">8</text>
+          <circle cx="45" cy="135" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="45" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#a78bfa">9</text>
+          <circle cx="75" cy="135" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="75" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#a78bfa">6</text>
+          <!-- Label -->
+          <text x="200" y="150" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#8888a8">d = 4, shallower tree</text>
+        </svg>
+      </div>
+      <div class="card blue" style="margin-top:0.5em">
+        <p><strong style="color:var(--blue)">Practical tip:</strong> for Dijkstra's where decrease-key dominates, a 4-ary heap often outperforms binary. The shallower tree also improves cache performance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 13 — Binomial Heaps
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">13</span>
+    <h2>Binomial Heaps</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Binomial trees</h3>
+      <p>A binomial tree <code>B_k</code> is defined recursively:</p>
+      <ul>
+        <li><code>B_0</code> is a single node</li>
+        <li><code>B_k</code> is formed by linking two <code>B_(k-1)</code> trees — one becomes the leftmost child of the other's root</li>
+        <li><code>B_k</code> has exactly <code>2^k</code> nodes and height <code>k</code></li>
+      </ul>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin-top:.3em;">
+        <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- B_0 -->
+          <circle cx="20" cy="30" r="10" fill="#1a1a28" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="20" y="60" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#f5a623">B₀</text>
+          <!-- B_1 -->
+          <line x1="75" y1="38" x2="75" y2="60" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="75" cy="30" r="10" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <circle cx="75" cy="70" r="10" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="75" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4ecb8d">B₁</text>
+          <!-- B_2 -->
+          <line x1="140" y1="38" x2="125" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="140" y1="38" x2="155" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="125" y1="68" x2="125" y2="85" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="140" cy="30" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <circle cx="125" cy="60" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <circle cx="155" cy="60" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <circle cx="125" cy="90" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="140" y="112" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#a78bfa">B₂</text>
+          <!-- B_3 (simplified) -->
+          <line x1="230" y1="18" x2="205" y2="38" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="230" y1="18" x2="240" y2="38" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="230" y1="18" x2="270" y2="38" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="205" y1="48" x2="195" y2="65" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="205" y1="48" x2="215" y2="65" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="240" y1="48" x2="240" y2="65" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="195" y1="75" x2="195" y2="92" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="230" cy="12" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <circle cx="205" cy="42" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <circle cx="240" cy="42" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <circle cx="270" cy="42" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <circle cx="195" cy="70" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <circle cx="215" cy="70" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <circle cx="240" cy="70" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <circle cx="195" cy="98" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="230" y="112" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#60a5fa">B₃</text>
+        </svg>
+      </div>
+    </div>
+    <div>
+      <h3>Binomial heap structure</h3>
+      <p>A collection of binomial trees where:</p>
+      <ul>
+        <li>Each tree satisfies the min-heap property</li>
+        <li>At most <strong>one</strong> tree of each order (like binary representation of n)</li>
+        <li>Trees stored in a linked list sorted by order</li>
+      </ul>
+      <table style="margin-top:0.4em">
+        <tr><th>Operation</th><th>Time</th></tr>
+        <tr><td>insert</td><td>O(log n), amortised O(1)</td></tr>
+        <tr><td>extract-min</td><td>O(log n)</td></tr>
+        <tr><td>merge</td><td>O(log n)</td></tr>
+        <tr><td>decrease-key</td><td>O(log n)</td></tr>
+      </table>
+      <div class="card green" style="margin-top:0.5em">
+        <p><strong style="color:var(--green)">Key advantage:</strong> O(log n) merge. Binary heaps require O(n) to merge two heaps. Merging binomial heaps works like binary addition — carry when two trees of the same order collide.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 14 — Fibonacci Heaps -- Structure
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">14</span>
+    <h2>Fibonacci Heaps — Structure</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Lazy mergeable heap</h3>
+      <p>A Fibonacci heap is a collection of heap-ordered trees with:</p>
+      <ul>
+        <li>A <strong>min pointer</strong> to the root with the smallest key</li>
+        <li>Trees stored in a <strong>circular doubly-linked list</strong> of roots</li>
+        <li>Each node tracks its <strong>degree</strong> and a <strong>mark</strong> bit</li>
+      </ul>
+      <h3 style="margin-top:0.4em">Key operations</h3>
+      <ul>
+        <li><strong>insert:</strong> create single-node tree, add to root list, update min — <span class="g">O(1)</span></li>
+        <li><strong>merge:</strong> concatenate root lists, update min — <span class="g">O(1)</span></li>
+        <li><strong>extract-min:</strong> remove min, add children to root list, consolidate — <span class="a">O(log n)*</span></li>
+        <li><strong>decrease-key:</strong> cut node, add to root list, cascade cuts — <span class="g">O(1)*</span></li>
+      </ul>
+      <p style="font-size:0.48em; color:var(--muted);">* = amortised</p>
+    </div>
+    <div>
+      <h3>Structure diagram</h3>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em;">
+        <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <defs>
+            <marker id="fh-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+            </marker>
+          </defs>
+          <!-- Root list (circular) -->
+          <line x1="60" y1="30" x2="130" y2="30" stroke="#f5a623" stroke-width="1.5" marker-end="url(#fh-arr)"/>
+          <line x1="150" y1="30" x2="220" y2="30" stroke="#f5a623" stroke-width="1.5" marker-end="url(#fh-arr)"/>
+          <!-- Min pointer -->
+          <text x="45" y="10" font-family="'JetBrains Mono',monospace" font-size="9" fill="#f5a623">min</text>
+          <line x1="45" y1="12" x2="45" y2="22" stroke="#f5a623" stroke-width="1.5" marker-end="url(#fh-arr)"/>
+          <!-- Root nodes -->
+          <circle cx="45" cy="30" r="14" fill="#2e1e00" stroke="#f5a623" stroke-width="2"/>
+          <text x="45" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f5a623">1</text>
+          <circle cx="145" cy="30" r="14" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="145" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">5</text>
+          <circle cx="235" cy="30" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="235" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#a78bfa">3</text>
+          <!-- Children of node 1 -->
+          <line x1="45" y1="44" x2="45" y2="62" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="45" cy="75" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="45" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">8</text>
+          <!-- Children of node 8 -->
+          <line x1="33" y1="85" x2="20" y2="105" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="57" y1="85" x2="70" y2="105" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="20" cy="115" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="20" y="119" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">12</text>
+          <circle cx="70" cy="115" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="70" y="119" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">10</text>
+          <!-- Children of node 3 -->
+          <line x1="225" y1="44" x2="210" y2="62" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="245" y1="44" x2="260" y2="62" stroke="#2a2a3a" stroke-width="1.5"/>
+          <circle cx="210" cy="75" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="210" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">7</text>
+          <circle cx="260" cy="75" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
+          <text x="260" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">4</text>
+          <!-- Circular link back -->
+          <path d="M 249,30 C 280,30 290,0 150,0 C 30,0 20,20 32,28" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,2" fill="none" marker-end="url(#fh-arr)"/>
+          <!-- Label -->
+          <text x="150" y="170" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#8888a8">Circular doubly-linked root list</text>
+        </svg>
+      </div>
+      <div class="card amber" style="margin-top:0.4em">
+        <p><strong style="color:var(--amber)">The magic:</strong> defer cleanup to extract-min. This laziness is what makes insert, merge, and decrease-key all O(1) amortised.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 15 — Fibonacci Heaps -- Amortised Analysis
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">15</span>
+    <h2>Fibonacci Heaps — Amortised Analysis</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Potential function</h3>
+      <p>Define <code>Φ = t + 2m</code> where <code>t</code> = number of trees in root list, <code>m</code> = number of marked nodes.</p>
+      <table>
+        <tr><th>Operation</th><th>Actual</th><th>ΔΦ</th><th>Amortised</th></tr>
+        <tr><td>insert</td><td>O(1)</td><td>+1</td><td><span class="g">O(1)</span></td></tr>
+        <tr><td>merge</td><td>O(1)</td><td>0</td><td><span class="g">O(1)</span></td></tr>
+        <tr><td>extract-min</td><td>O(t + log n)</td><td>-(t - log n)</td><td><span class="a">O(log n)</span></td></tr>
+        <tr><td>decrease-key</td><td>O(c) cuts</td><td>-(c - 2)</td><td><span class="g">O(1)</span></td></tr>
+      </table>
+      <div class="card blue" style="margin-top:0.5em">
+        <p><strong style="color:var(--blue)">Cascading cuts:</strong> when a node loses a second child, it is cut from its parent and added to the root list. The mark bit tracks whether a node has lost a child since becoming a child itself.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Why O(log n) max degree?</h3>
+      <ul>
+        <li>A node of degree <code>k</code> has at least <code>F_(k+2)</code> descendants</li>
+        <li><code>F_(k+2) ≥ φ^k</code> where <code>φ = (1+√5)/2 ≈ 1.618</code></li>
+        <li>Therefore <code>k ≤ log_φ(n)</code> = O(log n)</li>
+      </ul>
+      <div class="card purple" style="margin-top:0.5em">
+        <p><strong style="color:var(--purple)">The Fibonacci connection:</strong> the name comes from the fact that the minimum subtree sizes follow the Fibonacci sequence. This bounds the maximum degree at O(log n).</p>
+      </div>
+      <div class="card red" style="margin-top:0.5em">
+        <p><strong style="color:var(--red)">In practice:</strong> Fibonacci heaps achieve theoretically optimal amortised bounds, but large constant factors and pointer-heavy structure make them slower than binary heaps for most real workloads. They shine only for very dense graphs with many decrease-key operations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 16 — Pairing Heaps
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">16</span>
+    <h2>Pairing Heaps</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>A simpler alternative</h3>
+      <p>Pairing heaps achieve similar practical performance to Fibonacci heaps with a much simpler implementation. Each node stores:</p>
+      <ul>
+        <li>A key value</li>
+        <li>A pointer to its leftmost child</li>
+        <li>A pointer to its next sibling</li>
+      </ul>
+      <h3 style="margin-top:0.4em">Operations</h3>
+      <table>
+        <tr><th>Operation</th><th>Time</th></tr>
+        <tr><td>insert</td><td>O(1)</td></tr>
+        <tr><td>find-min</td><td>O(1)</td></tr>
+        <tr><td>merge</td><td>O(1) — link roots</td></tr>
+        <tr><td>extract-min</td><td>O(log n) amortised</td></tr>
+        <tr><td>decrease-key</td><td>O(log log n) amortised*</td></tr>
+      </table>
+      <p style="font-size:0.48em; color:var(--muted);">* conjectured O(1), proven O(log log n) by Pettie 2005</p>
+    </div>
+    <div>
+      <h3>Extract-min: two-pass pairing</h3>
+      <ol>
+        <li>Remove the root</li>
+        <li><strong>Left-to-right pass:</strong> pair adjacent siblings, merge each pair</li>
+        <li><strong>Right-to-left pass:</strong> merge resulting trees into one</li>
+      </ol>
+      <div style="display:flex; flex-direction:column; gap:.3em; margin-top:0.3em">
+        <div class="ss-row"><span class="ss-label">Children:</span> <span class="ss-node">5</span><span class="ss-node">3</span><span class="ss-node">8</span><span class="ss-node">2</span><span class="ss-node">7</span><span class="ss-node">6</span></div>
+        <div class="ss-row"><span class="ss-label">Pair L→R:</span> <span class="ss-node done">[3,5]</span><span class="ss-node done">[2,8]</span><span class="ss-node done">[6,7]</span></div>
+        <div class="ss-row"><span class="ss-label">Merge R→L:</span> <span class="ss-node active">[2,...]</span></div>
+      </div>
+      <div class="card green" style="margin-top:0.5em">
+        <p><strong style="color:var(--green)">In practice:</strong> pairing heaps often outperform Fibonacci heaps due to simpler structure and better cache behaviour. They are the go-to "advanced" heap when binary heaps are insufficient.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 17 — Indexed Priority Queues
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">17</span>
+    <h2>Indexed Priority Queues</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>The decrease-key problem</h3>
+      <p>A standard binary heap cannot locate an arbitrary element — you can only access the root. Graph algorithms need to update priorities of elements already in the queue.</p>
+      <h3 style="margin-top:0.4em">Solution: position maps</h3>
+      <p>Augment a binary heap with an <strong style="color:var(--amber)">index table</strong> tracking where each element lives in the heap array:</p>
+      <pre><code>Heap array:    [A:2, C:5, B:3, D:8, E:7]
+Position map:  { A→0, B→2, C→1, D→3, E→4 }
+Inverse map:   { 0→A, 1→C, 2→B, 3→D, 4→E }</code></pre>
+      <p>Every swap in sift-up/sift-down must also update both maps — constant overhead per swap.</p>
+    </div>
+    <div>
+      <h3>Operations</h3>
+      <table>
+        <tr><th>Operation</th><th>Time</th><th>How</th></tr>
+        <tr><td>insert(id, p)</td><td>O(log n)</td><td>Add, sift-up, update maps</td></tr>
+        <tr><td>extract-min()</td><td>O(log n)</td><td>Swap, sift-down, update maps</td></tr>
+        <tr><td>decrease-key(id, p)</td><td>O(log n)</td><td>O(1) lookup + sift-up</td></tr>
+        <tr><td>contains(id)</td><td>O(1)</td><td>Check position map</td></tr>
+      </table>
+      <div class="card amber" style="margin-top:0.5em">
+        <p><strong style="color:var(--amber)">Standard implementation</strong> for Dijkstra's and Prim's algorithms. Java's <code>PriorityQueue</code> does not support decrease-key — you must implement your own or use lazy deletion.</p>
+      </div>
+      <div class="card purple" style="margin-top:0.3em">
+        <p><strong style="color:var(--purple)">Lazy deletion alternative:</strong> instead of decrease-key, insert a duplicate with the new priority. Ignore stale entries on extraction. Simpler but uses more memory.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 18 — Dijkstra's Algorithm
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">18</span>
+    <h2>Application — Dijkstra's Algorithm</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Shortest paths with a priority queue</h3>
+      <pre><code class="python">def dijkstra(graph, source):
+    dist = {v: float('inf') for v in graph}
+    dist[source] = 0
+    pq = MinHeap()
+    pq.insert(source, 0)
+
+    while not pq.is_empty():
+        u = pq.extract_min()
+        for v, weight in graph[u]:
+            new_dist = dist[u] + weight
+            if new_dist < dist[v]:
+                dist[v] = new_dist
+                pq.decrease_key(v, new_dist)
+    return dist</code></pre>
+      <div class="card blue" style="margin-top:0.3em">
+        <p>The <code>decrease_key</code> call is the critical operation — it runs once per edge relaxation.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Complexity depends on the heap</h3>
+      <table>
+        <tr><th>Heap type</th><th>Dijkstra's total</th></tr>
+        <tr><td>Unsorted array</td><td>O(V²)</td></tr>
+        <tr><td>Binary heap</td><td>O((V + E) log V)</td></tr>
+        <tr><td>D-ary heap (d = E/V)</td><td>O(E · log<sub>E/V</sub> V)</td></tr>
+        <tr><td>Fibonacci heap</td><td>O(V log V + E)</td></tr>
+      </table>
+      <div class="card green" style="margin-top:0.5em">
+        <p><strong style="color:var(--green)">Sparse graphs</strong> (E ~ V): binary heap gives O(V log V). Fibonacci heap also O(V log V).</p>
+      </div>
+      <div class="card amber" style="margin-top:0.3em">
+        <p><strong style="color:var(--amber)">Dense graphs</strong> (E ~ V²): Fibonacci heap gives O(V² + V log V) ≈ O(V²), matching the unsorted-array approach with better constant. Binary heap gives O(V² log V) — worse.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 19 — Huffman, Median, Scheduling
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">19</span>
+    <h2>Applications — Huffman, Median, Scheduling</h2>
+  </div>
+  <div class="cols cols-3" style="margin-top:0.3em">
+    <div class="card amber">
+      <h3>Huffman Coding</h3>
+      <p>Build an optimal prefix-free code by repeatedly extracting the two lowest-frequency symbols and merging.</p>
+      <ul>
+        <li>Min-heap on symbol frequencies</li>
+        <li>O(n log n) for n symbols</li>
+        <li>Greedy — heap provides the greedy choice</li>
+      </ul>
+    </div>
+    <div class="card green">
+      <h3>Running Median</h3>
+      <p>Maintain the median of a data stream using two heaps:</p>
+      <ul>
+        <li><strong>Max-heap</strong> for the lower half</li>
+        <li><strong>Min-heap</strong> for the upper half</li>
+        <li>Balance sizes (differ by at most 1)</li>
+        <li>Median at a root — O(1) query, O(log n) insert</li>
+      </ul>
+    </div>
+    <div class="card purple">
+      <h3>Task Scheduling</h3>
+      <p>Priority queues power:</p>
+      <ul>
+        <li>OS process scheduling</li>
+        <li>Event-driven simulation</li>
+        <li>Job queues (Celery, Sidekiq)</li>
+        <li>A* search (open list by f(n))</li>
+        <li>K-way merge of sorted lists</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card blue" style="margin-top:0.5em">
+    <p><strong style="color:var(--blue)">Pattern:</strong> whenever you repeatedly need "the next most important element" from a dynamic collection, reach for a priority queue. The heap is the engine; the priority queue is the interface.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 20 — Summary
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">20</span>
+    <h2>Summary & Further Reading</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Key takeaways</h3>
+      <ul>
+        <li>A priority queue is an ADT; a binary heap is its most common implementation</li>
+        <li>Binary heaps use an implicit array — no pointers, O(1) space overhead</li>
+        <li>Build-heap is <strong style="color:var(--green)">O(n)</strong> via Floyd's bottom-up sift-down — not O(n log n)</li>
+        <li>Heap sort is O(n log n) worst-case, in-place, but not stable</li>
+        <li>Fibonacci heaps offer <strong style="color:var(--green)">O(1)</strong> amortised decrease-key — optimal for dense-graph Dijkstra's</li>
+        <li>Pairing heaps are simpler than Fibonacci heaps and often faster in practice</li>
+        <li>Indexed priority queues solve the decrease-key lookup problem</li>
+        <li>D-ary heaps (d=4) often beat binary heaps due to cache effects</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Recommended reading</h3>
+      <table>
+        <tr><th>Source</th><th>Description</th></tr>
+        <tr><td><strong>CLRS</strong></td><td>Ch. 6 (heapsort), Ch. 19 (Fibonacci heaps) — the standard reference</td></tr>
+        <tr><td><strong>Sedgewick</strong></td><td><em>Algorithms</em> — clear binary heap and indexed PQ implementations</td></tr>
+        <tr><td><strong>Tarjan</strong></td><td><em>Data Structures and Network Algorithms</em> — original Fibonacci heap analysis</td></tr>
+        <tr><td><strong>Fredman & Tarjan</strong></td><td>"Fibonacci Heaps and Their Uses" — JACM 1987</td></tr>
+        <tr><td><strong>Fredman et al.</strong></td><td>"The Pairing Heap" — Algorithmica 1986</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  controls: true,
+  progress: true,
+  center: false,
+  width: 1100,
+  height: 900,
+  margin: 0.01,
+  plugins: [RevealHighlight],
+  highlight: { theme: 'monokai' }
+});
+</script>
+<script>
+(function(){
+  var h = Reveal.getConfig().height || 900;
+  var m = Reveal.getConfig().margin || 0.02;
+  var maxH = Math.floor(h * (1 - 2 * m)) + 'px';
+  function fixSlides(){
+    document.querySelectorAll('.reveal .slides>section,.reveal .slides>section>section').forEach(function(s){
+      s.style.display = 'block';
+      s.style.maxHeight = maxH;
+    });
+  }
+  Reveal.on('ready', fixSlides);
+  Reveal.on('slidechanged', fixSlides);
+})();
+</script>
+</body>
+</html>
