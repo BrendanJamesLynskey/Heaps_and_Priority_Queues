@@ -6,7 +6,7 @@
   <title>Heaps and Priority Queues</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/white.min.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,17 +14,17 @@
 
   <style>
   :root {
-    --amber:  #f5a623;
-    --green:  #4ecb8d;
-    --purple: #a78bfa;
-    --blue:   #60a5fa;
-    --red:    #f87171;
-    --bg:     #0a0a0f;
-    --bg2:    #10101a;
-    --bg3:    #181824;
-    --border: #2a2a3a;
-    --text:   #e8e8f0;
-    --muted:  #8888a8;
+    --amber:  #bf7d10;
+    --green:  #1c815a;
+    --purple: #6435bc;
+    --blue:   #2b3dc5;
+    --red:    #db3a30;
+    --bg:     #fafaf8;
+    --bg2:    #f1f1ee;
+    --bg3:    #eaeae6;
+    --border: #d1d1cb;
+    --text:   #161616;
+    --muted:  #6a6a63;
   }
 
   .reveal-viewport { background: var(--bg); }
@@ -40,7 +40,7 @@
   .reveal code { font-family: 'JetBrains Mono', monospace; font-size: .72em; }
   .reveal pre  { box-shadow: none; background: var(--bg3); border: 1px solid var(--border);
                  border-radius: 6px; padding: .3em .5em; margin: .25em 0; }
-  .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #cdd6f4; }
+  .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #242422; }
 
   /* ── slide chrome ── */
   .slide-hdr {
@@ -75,16 +75,16 @@
   .card.blue  { border-left: 3px solid var(--blue); }
   .card.red   { border-left: 3px solid var(--red); }
   .card h3 { font-size: .64em; margin: 0 0 .12em; }
-  .card p  { font-size: .52em; margin: 0; color: #b8b8d0; }
+  .card p  { font-size: .52em; margin: 0; color: #3d3d39; }
   .card ul { margin: 0; padding-left: 1em; }
-  .card li { font-size: .52em; color: #b8b8d0; margin-bottom: .02em; }
+  .card li { font-size: .52em; color: #3d3d39; margin-bottom: .02em; }
 
   /* ── table ── */
   .reveal table { width: 100%; border-collapse: collapse; font-size: .5em; }
   .reveal table th { background: var(--bg3); color: var(--amber); font-weight: 600;
                      padding: .2em .4em; border: 1px solid var(--border); text-align: left; }
-  .reveal table td { padding: .18em .4em; border: 1px solid var(--border); color: #ccc; }
-  .reveal table tr:nth-child(even) td { background: #0e0e18; }
+  .reveal table td { padding: .18em .4em; border: 1px solid var(--border); color: #2d2d2b; }
+  .reveal table tr:nth-child(even) td { background: #f3f3f1; }
 
   /* ── accent spans ── */
   .a  { color: var(--amber); font-weight: 600; }
@@ -127,8 +127,8 @@
     padding: .2em .55em; border-radius: 5px; font-size: .9em;
     background: var(--bg3); border: 1px solid var(--border); color: var(--text);
   }
-  .ss-node.active { background: #1a2a1a; border-color: var(--green); color: var(--green); }
-  .ss-node.done   { background: #1a1a2a; border-color: var(--purple); color: var(--purple); }
+  .ss-node.active { background: #d3e1d5; border-color: var(--green); color: var(--green); }
+  .ss-node.done   { background: #e6e6e2; border-color: var(--purple); color: var(--purple); }
   .ss-arrow { color: var(--amber); }
   .ss-label { font-size: .8em; color: var(--muted); margin-left: .3em; }
 
@@ -136,6 +136,7 @@
   .reveal ul, .reveal ol { margin: .15em 0 .15em 1em; }
 .reveal .slides > section { display: flex !important; flex-direction: column !important; overflow-y: auto !important; align-items: stretch !important; justify-content: flex-start !important; }
 </style>
+<style>.reveal .slide-number{background-color:transparent}</style>
 </head>
 <body>
 <div class="reveal">
@@ -144,7 +145,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 01 — Title
 ══════════════════════════════════════════════════════════════════ -->
-<section class="title-slide" data-background-color="#0a0a0f">
+<section class="title-slide" data-background-color="#fafaf8">
   <div style="font-family:'JetBrains Mono',monospace; font-size:.5em; color:var(--muted); margin-bottom:.4em; letter-spacing:.1em;">COMPUTER SCIENCE FUNDAMENTALS SERIES</div>
   <h1>Heaps and<br>Priority Queues</h1>
   <div class="subtitle">
@@ -160,7 +161,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 02 — Priority Queue ADT
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">02</span>
     <h2>Priority Queue ADT</h2>
@@ -199,7 +200,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 03 — Structure Property
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">03</span>
     <h2>Binary Heap — Structure Property</h2>
@@ -222,37 +223,37 @@
       <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em;">
         <svg viewBox="0 0 300 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
           <!-- Level 0 -->
-          <circle cx="150" cy="30" r="18" fill="#1a1a28" stroke="#f5a623" stroke-width="2"/>
-          <text x="150" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#f5a623">2</text>
+          <circle cx="150" cy="30" r="18" fill="#e7e7e2" stroke="#bf7d10" stroke-width="2"/>
+          <text x="150" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#bf7d10">2</text>
           <!-- Level 1 -->
-          <line x1="138" y1="45" x2="85" y2="75" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="162" y1="45" x2="215" y2="75" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="80" cy="90" r="18" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="80" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4ecb8d">5</text>
-          <circle cx="220" cy="90" r="18" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="220" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4ecb8d">3</text>
+          <line x1="138" y1="45" x2="85" y2="75" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="162" y1="45" x2="215" y2="75" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="80" cy="90" r="18" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="80" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#1c815a">5</text>
+          <circle cx="220" cy="90" r="18" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="220" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#1c815a">3</text>
           <!-- Level 2 -->
-          <line x1="68" y1="105" x2="40" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="92" y1="105" x2="120" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="208" y1="105" x2="180" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="232" y1="105" x2="260" y2="135" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="35" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="35" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">8</text>
-          <circle cx="120" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="120" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">7</text>
-          <circle cx="180" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="180" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">9</text>
-          <circle cx="265" cy="150" r="18" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="265" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">4</text>
+          <line x1="68" y1="105" x2="40" y2="135" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="92" y1="105" x2="120" y2="135" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="208" y1="105" x2="180" y2="135" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="232" y1="105" x2="260" y2="135" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="35" cy="150" r="18" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="35" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6435bc">8</text>
+          <circle cx="120" cy="150" r="18" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="120" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6435bc">7</text>
+          <circle cx="180" cy="150" r="18" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="180" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6435bc">9</text>
+          <circle cx="265" cy="150" r="18" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="265" y="155" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6435bc">4</text>
           <!-- Level 3 (partial — shows completeness) -->
-          <line x1="23" y1="165" x2="10" y2="190" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="47" y1="165" x2="60" y2="190" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="10" cy="205" r="16" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <text x="10" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#60a5fa">10</text>
-          <circle cx="60" cy="205" r="16" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <text x="60" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#60a5fa">12</text>
+          <line x1="23" y1="165" x2="10" y2="190" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="47" y1="165" x2="60" y2="190" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="10" cy="205" r="16" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <text x="10" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2b3dc5">10</text>
+          <circle cx="60" cy="205" r="16" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <text x="60" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2b3dc5">12</text>
           <!-- Label -->
-          <text x="150" y="235" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8888a8">Height = ⌊log₂ n⌋ = 3</text>
+          <text x="150" y="235" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#6a6a63">Height = ⌊log₂ n⌋ = 3</text>
         </svg>
       </div>
     </div>
@@ -262,7 +263,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 04 — Heap Property
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">04</span>
     <h2>Binary Heap — Heap Property</h2>
@@ -273,24 +274,24 @@
       <p>Every node's key is <strong style="color:var(--green)">less than or equal to</strong> both of its children's keys. The root holds the minimum.</p>
       <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin-top:.3em;">
         <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-          <line x1="110" y1="25" x2="55" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="110" y1="25" x2="165" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="55" y1="70" x2="28" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="55" y1="70" x2="82" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="165" y1="70" x2="138" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="110" cy="20" r="15" fill="#1a2a1a" stroke="#4ecb8d" stroke-width="2"/>
-          <text x="110" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#4ecb8d">2</text>
-          <circle cx="55" cy="65" r="15" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="55" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#e8e8f0">5</text>
-          <circle cx="165" cy="65" r="15" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="165" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#e8e8f0">3</text>
-          <circle cx="28" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="28" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8888a8">8</text>
-          <circle cx="82" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="82" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8888a8">7</text>
-          <circle cx="138" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="138" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#8888a8">9</text>
-          <text x="110" y="145" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#4ecb8d">Parent ≤ Children</text>
+          <line x1="110" y1="25" x2="55" y2="55" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="110" y1="25" x2="165" y2="55" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="28" y2="100" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="82" y2="100" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="165" y1="70" x2="138" y2="100" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="110" cy="20" r="15" fill="#d3e1d5" stroke="#1c815a" stroke-width="2"/>
+          <text x="110" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#1c815a">2</text>
+          <circle cx="55" cy="65" r="15" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="55" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#161616">5</text>
+          <circle cx="165" cy="65" r="15" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="165" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#161616">3</text>
+          <circle cx="28" cy="110" r="15" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="28" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6a6a63">8</text>
+          <circle cx="82" cy="110" r="15" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="82" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6a6a63">7</text>
+          <circle cx="138" cy="110" r="15" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="138" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6a6a63">9</text>
+          <text x="110" y="145" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#1c815a">Parent ≤ Children</text>
         </svg>
       </div>
     </div>
@@ -299,24 +300,24 @@
       <p>Every node's key is <strong style="color:var(--amber)">greater than or equal to</strong> both of its children's keys. The root holds the maximum.</p>
       <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin-top:.3em;">
         <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
-          <line x1="110" y1="25" x2="55" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="110" y1="25" x2="165" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="55" y1="70" x2="28" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="55" y1="70" x2="82" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="165" y1="70" x2="138" y2="100" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="110" cy="20" r="15" fill="#2e1e00" stroke="#f5a623" stroke-width="2"/>
-          <text x="110" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#f5a623">50</text>
-          <circle cx="55" cy="65" r="15" fill="#1a1a28" stroke="#f5a623" stroke-width="1.5"/>
-          <text x="55" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">30</text>
-          <circle cx="165" cy="65" r="15" fill="#1a1a28" stroke="#f5a623" stroke-width="1.5"/>
-          <text x="165" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">40</text>
-          <circle cx="28" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="28" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#8888a8">10</text>
-          <circle cx="82" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="82" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#8888a8">20</text>
-          <circle cx="138" cy="110" r="15" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="138" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#8888a8">35</text>
-          <text x="110" y="145" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#f5a623">Parent ≥ Children</text>
+          <line x1="110" y1="25" x2="55" y2="55" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="110" y1="25" x2="165" y2="55" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="28" y2="100" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="55" y1="70" x2="82" y2="100" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="165" y1="70" x2="138" y2="100" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="110" cy="20" r="15" fill="#f8e2c5" stroke="#bf7d10" stroke-width="2"/>
+          <text x="110" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#bf7d10">50</text>
+          <circle cx="55" cy="65" r="15" fill="#e7e7e2" stroke="#bf7d10" stroke-width="1.5"/>
+          <text x="55" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">30</text>
+          <circle cx="165" cy="65" r="15" fill="#e7e7e2" stroke="#bf7d10" stroke-width="1.5"/>
+          <text x="165" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">40</text>
+          <circle cx="28" cy="110" r="15" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="28" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#6a6a63">10</text>
+          <circle cx="82" cy="110" r="15" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="82" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#6a6a63">20</text>
+          <circle cx="138" cy="110" r="15" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="138" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#6a6a63">35</text>
+          <text x="110" y="145" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#bf7d10">Parent ≥ Children</text>
         </svg>
       </div>
     </div>
@@ -329,7 +330,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 05 — Array Representation
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">05</span>
     <h2>Array Representation</h2>
@@ -341,35 +342,35 @@
       <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin:.3em 0;">
         <svg viewBox="0 0 380 50" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
           <!-- Array cells -->
-          <rect x="0" y="5" width="38" height="30" rx="3" fill="#2e1e00" stroke="#f5a623" stroke-width="1"/>
-          <rect x="42" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
-          <rect x="84" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
-          <rect x="126" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
-          <rect x="168" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
-          <rect x="210" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
-          <rect x="252" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
-          <rect x="294" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
-          <rect x="336" y="5" width="38" height="30" rx="3" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1"/>
+          <rect x="0" y="5" width="38" height="30" rx="3" fill="#f8e2c5" stroke="#bf7d10" stroke-width="1"/>
+          <rect x="42" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
+          <rect x="84" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
+          <rect x="126" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
+          <rect x="168" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
+          <rect x="210" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
+          <rect x="252" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
+          <rect x="294" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
+          <rect x="336" y="5" width="38" height="30" rx="3" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1"/>
           <!-- Values -->
-          <text x="19" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f5a623">2</text>
-          <text x="61" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">5</text>
-          <text x="103" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">3</text>
-          <text x="145" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">8</text>
-          <text x="187" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">7</text>
-          <text x="229" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">9</text>
-          <text x="271" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">4</text>
-          <text x="313" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">10</text>
-          <text x="355" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e8e8f0">12</text>
+          <text x="19" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#bf7d10">2</text>
+          <text x="61" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">5</text>
+          <text x="103" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">3</text>
+          <text x="145" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">8</text>
+          <text x="187" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">7</text>
+          <text x="229" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">9</text>
+          <text x="271" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">4</text>
+          <text x="313" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">10</text>
+          <text x="355" y="25" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#161616">12</text>
           <!-- Indices -->
-          <text x="19" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">0</text>
-          <text x="61" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">1</text>
-          <text x="103" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">2</text>
-          <text x="145" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">3</text>
-          <text x="187" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">4</text>
-          <text x="229" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">5</text>
-          <text x="271" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">6</text>
-          <text x="313" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">7</text>
-          <text x="355" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8888a8">8</text>
+          <text x="19" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">0</text>
+          <text x="61" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">1</text>
+          <text x="103" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">2</text>
+          <text x="145" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">3</text>
+          <text x="187" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">4</text>
+          <text x="229" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">5</text>
+          <text x="271" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">6</text>
+          <text x="313" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">7</text>
+          <text x="355" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6a6a63">8</text>
         </svg>
       </div>
     </div>
@@ -393,7 +394,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 06 — Sift-Up
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">06</span>
     <h2>Sift-Up (Insert)</h2>
@@ -436,7 +437,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 07 — Sift-Down
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">07</span>
     <h2>Sift-Down (Extract)</h2>
@@ -488,7 +489,7 @@ def sift_down(heap, i):
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 08 — Build-Heap
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">08</span>
     <h2>Build-Heap in O(n)</h2>
@@ -526,7 +527,7 @@ def sift_down(heap, i):
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 09 — Build-Heap Proof
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">09</span>
     <h2>Build-Heap — Proof of O(n)</h2>
@@ -566,7 +567,7 @@ Therefore: T(n) = n · 2 / 2 = n</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 10 — Heap Sort
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">10</span>
     <h2>Heap Sort</h2>
@@ -611,7 +612,7 @@ Therefore: T(n) = n · 2 / 2 = n</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 11 — Min vs Max Heap
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">11</span>
     <h2>Min-Heap vs Max-Heap</h2>
@@ -655,7 +656,7 @@ largest = -heapq.heappop(max_heap)</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 12 — D-ary Heaps
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">12</span>
     <h2>D-ary Heaps</h2>
@@ -683,33 +684,33 @@ largest = -heapq.heappop(max_heap)</code></pre>
       <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em;">
         <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
           <!-- Root -->
-          <circle cx="140" cy="25" r="16" fill="#2e1e00" stroke="#f5a623" stroke-width="2"/>
-          <text x="140" y="30" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f5a623">2</text>
+          <circle cx="140" cy="25" r="16" fill="#f8e2c5" stroke="#bf7d10" stroke-width="2"/>
+          <text x="140" y="30" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#bf7d10">2</text>
           <!-- Level 1: 4 children -->
-          <line x1="128" y1="38" x2="45" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="134" y1="40" x2="105" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="146" y1="40" x2="175" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="152" y1="38" x2="235" y2="72" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="45" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="45" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">5</text>
-          <circle cx="105" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="105" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">3</text>
-          <circle cx="175" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="175" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">7</text>
-          <circle cx="235" cy="85" r="16" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="235" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">4</text>
+          <line x1="128" y1="38" x2="45" y2="72" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="134" y1="40" x2="105" y2="72" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="146" y1="40" x2="175" y2="72" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="152" y1="38" x2="235" y2="72" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="45" cy="85" r="16" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="45" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1c815a">5</text>
+          <circle cx="105" cy="85" r="16" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="105" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1c815a">3</text>
+          <circle cx="175" cy="85" r="16" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="175" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1c815a">7</text>
+          <circle cx="235" cy="85" r="16" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="235" y="90" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1c815a">4</text>
           <!-- Level 2: children of node 5 -->
-          <line x1="33" y1="98" x2="15" y2="122" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="45" y1="100" x2="45" y2="122" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="57" y1="98" x2="75" y2="122" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="15" cy="135" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="15" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#a78bfa">8</text>
-          <circle cx="45" cy="135" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="45" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#a78bfa">9</text>
-          <circle cx="75" cy="135" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="75" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#a78bfa">6</text>
+          <line x1="33" y1="98" x2="15" y2="122" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="45" y1="100" x2="45" y2="122" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="57" y1="98" x2="75" y2="122" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="15" cy="135" r="14" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="15" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#6435bc">8</text>
+          <circle cx="45" cy="135" r="14" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="45" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#6435bc">9</text>
+          <circle cx="75" cy="135" r="14" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="75" y="140" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#6435bc">6</text>
           <!-- Label -->
-          <text x="200" y="150" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#8888a8">d = 4, shallower tree</text>
+          <text x="200" y="150" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#6a6a63">d = 4, shallower tree</text>
         </svg>
       </div>
       <div class="card blue" style="margin-top:0.5em">
@@ -722,7 +723,7 @@ largest = -heapq.heappop(max_heap)</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 13 — Binomial Heaps
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">13</span>
     <h2>Binomial Heaps</h2>
@@ -739,39 +740,39 @@ largest = -heapq.heappop(max_heap)</code></pre>
       <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin-top:.3em;">
         <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
           <!-- B_0 -->
-          <circle cx="20" cy="30" r="10" fill="#1a1a28" stroke="#f5a623" stroke-width="1.5"/>
-          <text x="20" y="60" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#f5a623">B₀</text>
+          <circle cx="20" cy="30" r="10" fill="#e7e7e2" stroke="#bf7d10" stroke-width="1.5"/>
+          <text x="20" y="60" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#bf7d10">B₀</text>
           <!-- B_1 -->
-          <line x1="75" y1="38" x2="75" y2="60" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="75" cy="30" r="10" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <circle cx="75" cy="70" r="10" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="75" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4ecb8d">B₁</text>
+          <line x1="75" y1="38" x2="75" y2="60" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="75" cy="30" r="10" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <circle cx="75" cy="70" r="10" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="75" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1c815a">B₁</text>
           <!-- B_2 -->
-          <line x1="140" y1="38" x2="125" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="140" y1="38" x2="155" y2="55" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="125" y1="68" x2="125" y2="85" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="140" cy="30" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <circle cx="125" cy="60" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <circle cx="155" cy="60" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <circle cx="125" cy="90" r="10" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="140" y="112" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#a78bfa">B₂</text>
+          <line x1="140" y1="38" x2="125" y2="55" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="140" y1="38" x2="155" y2="55" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="125" y1="68" x2="125" y2="85" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="140" cy="30" r="10" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <circle cx="125" cy="60" r="10" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <circle cx="155" cy="60" r="10" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <circle cx="125" cy="90" r="10" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="140" y="112" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#6435bc">B₂</text>
           <!-- B_3 (simplified) -->
-          <line x1="230" y1="18" x2="205" y2="38" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="230" y1="18" x2="240" y2="38" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="230" y1="18" x2="270" y2="38" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="205" y1="48" x2="195" y2="65" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="205" y1="48" x2="215" y2="65" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="240" y1="48" x2="240" y2="65" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="195" y1="75" x2="195" y2="92" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="230" cy="12" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="205" cy="42" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="240" cy="42" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="270" cy="42" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="195" cy="70" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="215" cy="70" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="240" cy="70" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <circle cx="195" cy="98" r="10" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
-          <text x="230" y="112" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#60a5fa">B₃</text>
+          <line x1="230" y1="18" x2="205" y2="38" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="230" y1="18" x2="240" y2="38" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="230" y1="18" x2="270" y2="38" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="205" y1="48" x2="195" y2="65" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="205" y1="48" x2="215" y2="65" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="240" y1="48" x2="240" y2="65" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="195" y1="75" x2="195" y2="92" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="230" cy="12" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <circle cx="205" cy="42" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <circle cx="240" cy="42" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <circle cx="270" cy="42" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <circle cx="195" cy="70" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <circle cx="215" cy="70" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <circle cx="240" cy="70" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <circle cx="195" cy="98" r="10" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
+          <text x="230" y="112" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#2b3dc5">B₃</text>
         </svg>
       </div>
     </div>
@@ -800,7 +801,7 @@ largest = -heapq.heappop(max_heap)</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 14 — Fibonacci Heaps -- Structure
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">14</span>
     <h2>Fibonacci Heaps — Structure</h2>
@@ -829,44 +830,44 @@ largest = -heapq.heappop(max_heap)</code></pre>
         <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
           <defs>
             <marker id="fh-arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L0,6 L8,3 z" fill="#f5a623"/>
+              <path d="M0,0 L0,6 L8,3 z" fill="#bf7d10"/>
             </marker>
           </defs>
           <!-- Root list (circular) -->
-          <line x1="60" y1="30" x2="130" y2="30" stroke="#f5a623" stroke-width="1.5" marker-end="url(#fh-arr)"/>
-          <line x1="150" y1="30" x2="220" y2="30" stroke="#f5a623" stroke-width="1.5" marker-end="url(#fh-arr)"/>
+          <line x1="60" y1="30" x2="130" y2="30" stroke="#bf7d10" stroke-width="1.5" marker-end="url(#fh-arr)"/>
+          <line x1="150" y1="30" x2="220" y2="30" stroke="#bf7d10" stroke-width="1.5" marker-end="url(#fh-arr)"/>
           <!-- Min pointer -->
-          <text x="45" y="10" font-family="'JetBrains Mono',monospace" font-size="9" fill="#f5a623">min</text>
-          <line x1="45" y1="12" x2="45" y2="22" stroke="#f5a623" stroke-width="1.5" marker-end="url(#fh-arr)"/>
+          <text x="45" y="10" font-family="'JetBrains Mono',monospace" font-size="9" fill="#bf7d10">min</text>
+          <line x1="45" y1="12" x2="45" y2="22" stroke="#bf7d10" stroke-width="1.5" marker-end="url(#fh-arr)"/>
           <!-- Root nodes -->
-          <circle cx="45" cy="30" r="14" fill="#2e1e00" stroke="#f5a623" stroke-width="2"/>
-          <text x="45" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f5a623">1</text>
-          <circle cx="145" cy="30" r="14" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
-          <text x="145" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">5</text>
-          <circle cx="235" cy="30" r="14" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
-          <text x="235" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#a78bfa">3</text>
+          <circle cx="45" cy="30" r="14" fill="#f8e2c5" stroke="#bf7d10" stroke-width="2"/>
+          <text x="45" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#bf7d10">1</text>
+          <circle cx="145" cy="30" r="14" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
+          <text x="145" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1c815a">5</text>
+          <circle cx="235" cy="30" r="14" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
+          <text x="235" y="35" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#6435bc">3</text>
           <!-- Children of node 1 -->
-          <line x1="45" y1="44" x2="45" y2="62" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="45" cy="75" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="45" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">8</text>
+          <line x1="45" y1="44" x2="45" y2="62" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="45" cy="75" r="12" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="45" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#161616">8</text>
           <!-- Children of node 8 -->
-          <line x1="33" y1="85" x2="20" y2="105" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="57" y1="85" x2="70" y2="105" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="20" cy="115" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="20" y="119" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">12</text>
-          <circle cx="70" cy="115" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="70" y="119" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">10</text>
+          <line x1="33" y1="85" x2="20" y2="105" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="57" y1="85" x2="70" y2="105" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="20" cy="115" r="12" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="20" y="119" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#161616">12</text>
+          <circle cx="70" cy="115" r="12" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="70" y="119" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#161616">10</text>
           <!-- Children of node 3 -->
-          <line x1="225" y1="44" x2="210" y2="62" stroke="#2a2a3a" stroke-width="1.5"/>
-          <line x1="245" y1="44" x2="260" y2="62" stroke="#2a2a3a" stroke-width="1.5"/>
-          <circle cx="210" cy="75" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="210" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">7</text>
-          <circle cx="260" cy="75" r="12" fill="#1a1a28" stroke="#2a2a3a" stroke-width="1.5"/>
-          <text x="260" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#e8e8f0">4</text>
+          <line x1="225" y1="44" x2="210" y2="62" stroke="#d1d1cb" stroke-width="1.5"/>
+          <line x1="245" y1="44" x2="260" y2="62" stroke="#d1d1cb" stroke-width="1.5"/>
+          <circle cx="210" cy="75" r="12" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="210" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#161616">7</text>
+          <circle cx="260" cy="75" r="12" fill="#e7e7e2" stroke="#d1d1cb" stroke-width="1.5"/>
+          <text x="260" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#161616">4</text>
           <!-- Circular link back -->
-          <path d="M 249,30 C 280,30 290,0 150,0 C 30,0 20,20 32,28" stroke="#f5a623" stroke-width="1" stroke-dasharray="3,2" fill="none" marker-end="url(#fh-arr)"/>
+          <path d="M 249,30 C 280,30 290,0 150,0 C 30,0 20,20 32,28" stroke="#bf7d10" stroke-width="1" stroke-dasharray="3,2" fill="none" marker-end="url(#fh-arr)"/>
           <!-- Label -->
-          <text x="150" y="170" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#8888a8">Circular doubly-linked root list</text>
+          <text x="150" y="170" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="10" fill="#6a6a63">Circular doubly-linked root list</text>
         </svg>
       </div>
       <div class="card amber" style="margin-top:0.4em">
@@ -879,7 +880,7 @@ largest = -heapq.heappop(max_heap)</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 15 — Fibonacci Heaps -- Amortised Analysis
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">15</span>
     <h2>Fibonacci Heaps — Amortised Analysis</h2>
@@ -919,7 +920,7 @@ largest = -heapq.heappop(max_heap)</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 16 — Pairing Heaps
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">16</span>
     <h2>Pairing Heaps</h2>
@@ -966,7 +967,7 @@ largest = -heapq.heappop(max_heap)</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 17 — Indexed Priority Queues
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">17</span>
     <h2>Indexed Priority Queues</h2>
@@ -1004,7 +1005,7 @@ Inverse map:   { 0→A, 1→C, 2→B, 3→D, 4→E }</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 18 — Dijkstra's Algorithm
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">18</span>
     <h2>Application — Dijkstra's Algorithm</h2>
@@ -1052,7 +1053,7 @@ Inverse map:   { 0→A, 1→C, 2→B, 3→D, 4→E }</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 19 — Huffman, Median, Scheduling
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">19</span>
     <h2>Applications — Huffman, Median, Scheduling</h2>
@@ -1097,7 +1098,7 @@ Inverse map:   { 0→A, 1→C, 2→B, 3→D, 4→E }</code></pre>
 <!-- ═══════════════════════════════════════════════════════════════
   SLIDE 20 — Summary
 ══════════════════════════════════════════════════════════════════ -->
-<section data-background-color="#0a0a0f">
+<section data-background-color="#fafaf8">
   <div class="slide-hdr">
     <span class="tag">20</span>
     <h2>Summary & Further Reading</h2>
